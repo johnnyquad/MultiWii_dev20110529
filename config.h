@@ -4,16 +4,16 @@
 
 /* Set the minimum throttle command sent to the ESC (Electronic Speed Controller)
    This is the minimum value that allow motors to run at a idle speed  */
-#define MINTHROTTLE 1300 // for Turnigy Plush ESCs 10A
-//#define MINTHROTTLE 1120 // for Super Simple ESCs 10A
+//#define MINTHROTTLE 1300 // for Turnigy Plush ESCs 10A
+#define MINTHROTTLE 1120 // for Super Simple ESCs 10A
 //#define MINTHROTTLE 1190
 
 /* The type of multicopter */
 //#define GIMBAL
 //#define BI
-#define TRI
+//#define TRI
 //#define QUADP
-//#define QUADX
+#define QUADX
 //#define Y4
 //#define Y6
 //#define HEX6
@@ -29,8 +29,8 @@
 //#define I2C_SPEED 100000L     //100kHz normal mode, this value must be used for a genuine WMP
 #define I2C_SPEED 400000L   //400kHz fast mode, it works only with some WMP clones
 
-#define PROMINI  //Arduino type
-//#define MEGA
+//#define PROMINI  //Arduino type
+#define MEGA
 
 //enable internal I2C pull ups
 //#define INTERNAL_I2C_PULLUPS
@@ -48,7 +48,7 @@
 #define FAILSAFE                                  // Alex: comment this line if you want to deactivate the failsafe function
 #define FAILSAVE_DELAY     10                     // Guard time for failsafe activation after signal lost. 1 step = 0.1sec - 1sec in example
 #define FAILSAVE_OFF_DELAY 200                    // Time for Landing before motors stop in 0.1sec. 1 step = 0.1sec - 20sec in example
-#define FAILSAVE_THR0TTLE  (MINTHROTTLE + 200)    // Throttle level used for landing - may be relative to MINTHROTTLE - as in this case
+#define FAILSAVE_THR0TTLE  1607 //(MINTHROTTLE + 200)    // Throttle level used for landing - may be relative to MINTHROTTLE - as in this case
 
 
 /* The following lines apply only for a pitch/roll tilt stabilization system
@@ -65,21 +65,21 @@
 #define TILT_ROLL_PROP    10
 
 /* I2C gyroscope */
-#define ITG3200
+//#define ITG3200
 //#define L3G4200D
 
 /* I2C accelerometer */
 //#define ADXL345
 //#define BMA020
-#define BMA180
+//#define BMA180
 //#define NUNCHACK  // if you want to use the nunckuk as a standalone I2C ACC without WMP
 
 /* I2C barometer */
 #define BMP085
 
 /* I2C magnetometer */
-#define HMC5843
-//#define HMC5883
+//#define HMC5843
+#define HMC5883
 
 /* ADC accelerometer */ // for 5DOF from sparkfun, uses analog PIN A1/A2/A3
 //#define ADCACC
@@ -126,7 +126,7 @@
 
 /* In order to save space, it's possibile to desactivate the LCD configuration functions
    comment this line only if you don't plan to used a LCD */
-#define LCD_CONF
+//#define LCD_CONF
 
 /* to use Cat's whisker TEXTSTAR LCD, uncomment following line.
    Pleae note this display needs a full 4 wire connection to (+5V, Gnd, RXD, TXD )
