@@ -633,7 +633,7 @@ uint8_t WMP_getRawADC() {
     accADC[YAW] = acc_1G;
     return 1;
   } 
-
+  
   if ( (rawADC[5]&0x02) == 0x02 && (rawADC[5]&0x01) == 0 ) {// motion plus data
     GYRO_ORIENTATION( - ( ((rawADC[5]>>2)<<8) + rawADC[2] ) ,
                       - ( ((rawADC[4]>>2)<<8) + rawADC[1] ) ,
@@ -642,7 +642,11 @@ uint8_t WMP_getRawADC() {
     /*GYRO_ORIENTATION(   (rawADC[3]&0x01)     ? gyroADC[ROLL]/5  : gyroADC[ROLL] ,   //the ratio 1/5 is not exactly the IDG600 or ISZ650 specification 
                         (rawADC[4]&0x02)>>1  ? gyroADC[PITCH]/5 : gyroADC[PITCH] ,  //we detect here the slow of fast mode WMP gyros values (see wiibrew for more details)
                         (rawADC[3]&0x02)>>1  ? gyroADC[YAW]/5   : gyroADC[YAW]   ); // this step must be done after zero compensation    
-    */return 1;
+    */
+    gyroADC[ROLL] = (rawADC[3]&0x01)     ? gyroADC[ROLL]/5  : gyroADC[ROLL]; 
+    gyroADC[PITCH] = (rawADC[4]&0x02)>>1  ? gyroADC[PITCH]/5 : gyroADC[PITCH]; 
+    gyroADC[YAW] = (rawADC[3]&0x02)>>1  ? gyroADC[YAW]/5   : gyroADC[YAW];
+    return 1;
   } else if ( (rawADC[5]&0x02) == 0 && (rawADC[5]&0x01) == 0) { //nunchuk data
     ACC_ORIENTATION(  ( (rawADC[3]<<2)        + ((rawADC[5]>>4)&0x2) ) ,
                     - ( (rawADC[2]<<2)        + ((rawADC[5]>>3)&0x2) ) ,
