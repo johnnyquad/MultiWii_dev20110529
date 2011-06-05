@@ -264,6 +264,19 @@ void annexCode() { //this code is excetuted at each loop and won't interfere wit
   uint8_t axis;
   uint8_t prop1,prop2;
 
+//added JDH  
+//*********************************************************************************
+    rfdetect = analogRead(RF_DETPIN);
+  if (rfdetect < 200)
+   {
+     rf = false;
+     
+   }else
+   {
+     rf = true;
+   }
+//*********************************************************************************
+
   for(axis=0;axis<2;axis++) {
     //PITCH & ROLL dynamic PID adjustemnt, depending on stick deviation
     prop1 = 100-min(abs(rcData[axis]-1500)/5,100)*rollPitchRate/100;
@@ -279,6 +292,11 @@ void annexCode() { //this code is excetuted at each loop and won't interfere wit
   prop1 = 100-min(abs(rcData[YAW]-1500)/5,100)*yawRate/100;
   dynP8[YAW] = P8[YAW]*prop1/100;
   dynD8[YAW] = D8[YAW]*prop1/100;
+  
+  
+  batRaw = analogRead(V_BATPIN); //***************************************************************************
+  batVoltage = (batRaw*BATTERY_MONITOR_SCALE_FACTOR); //my own version JDH ***********************************
+
 
   #if defined(VBAT)
     vbatRaw = (vbatRaw*15 + analogRead(V_BATPIN)*16)>>4; // smoothing of vbat readings  
@@ -300,6 +318,20 @@ void annexCode() { //this code is excetuted at each loop and won't interfere wit
       }
     }
   #endif
+  
+
+//added JDH *************************************************************************************************
+   if(!(calibratingA > 0 || calibratingG > 0))
+   {
+   if (rf == false) LEDs.flashFaster();
+    else if (batVoltage < BAT_CRITICAL && rf == true) LEDs.flashFast();
+    else if (batVoltage < BAT_WARNING && rf == true) LEDs.flashSlow();
+    else {
+      LEDs.alwaysOn();
+     }
+   }
+//added JDH *************************************************************************************************
+
 
   if ( ( (calibratingA>0 && (ACC || nunchuk) ) || (calibratingG>0) ) ) {  // Calibration phasis
     LEDPIN_SWITCH
@@ -328,6 +360,49 @@ void annexCode() { //this code is excetuted at each loop and won't interfere wit
 
 
 void setup() {
+//added JDH *************************************************************************************************
+  pinMode(WIRELESS_TELEMETRY_J_PIN, INPUT);
+  digitalWrite(WIRELESS_TELEMETRY_J_PIN, HIGH); //turn on pullup resistor
+
+  if(digitalRead(WIRELESS_TELEMETRY_J_PIN) == LOW)  // jumper on
+  {
+    SERIAL_PORT = &Serial3; 
+  }else
+  {
+    SERIAL_PORT = &Serial;
+  }  
+
+#define  LED_RUN_DELAY  70
+  /*for (int i=0;i<8;i++) {
+    pinMode(LED_PIN1, OUTPUT); //checking my new LED drivers
+    pinMode(LED_PIN2, OUTPUT);
+    pinMode(LED_PIN3, OUTPUT);
+    pinMode(LED_PIN4, OUTPUT);  
+    digitalWrite(LED_PIN1, HIGH);
+    delay(LED_RUN_DELAY);
+    digitalWrite(LED_PIN1, LOW);
+    digitalWrite(LED_PIN2, HIGH);
+    delay(LED_RUN_DELAY);  
+    digitalWrite(LED_PIN2, LOW);
+    digitalWrite(LED_PIN3, HIGH);
+    delay(LED_RUN_DELAY); 
+    digitalWrite(LED_PIN3, LOW);  
+    digitalWrite(LED_PIN4, HIGH);
+    delay(LED_RUN_DELAY);
+    digitalWrite(LED_PIN1, LOW);  
+    digitalWrite(LED_PIN2, LOW);
+    digitalWrite(LED_PIN3, LOW);
+    digitalWrite(LED_PIN4, LOW);  
+  }
+  */
+  
+  //Compiler wont let me put {1, 2, 3} in as a param so copy it to a local array and work out how many led's we have at runtime
+  int arr_leds[] = LED_PINS;
+  LEDs.initialize(arr_leds, sizeof(arr_leds) / sizeof(int));
+  //LEDs.flashFast();
+  LEDs.alwaysOn();
+//added JDH *************************************************************************************************
+  
   Serial.begin(SERIAL_COM_SPEED);
   LEDPIN_PINMODE
   POWERPIN_PINMODE
@@ -349,6 +424,7 @@ void setup() {
 
 // ******** Main Loop *********
 void loop () {
+  LEDs.run(currentTime);//added JDH
   static uint8_t rcDelayCommand; // this indicates the number of time (multiple of RC measurement at 50Hz) the sticks must be maintained to run or switch off motors
   uint8_t axis,i;
   int16_t error;
@@ -385,9 +461,9 @@ void loop () {
       errorAngleI[ROLL] = 0; errorAngleI[PITCH] = 0;
       rcDelayCommand++;
       if (rcData[YAW] < MINCHECK && rcData[PITCH] < MINCHECK && armed == 0) {
-        if (rcDelayCommand == 20) calibratingG=400;
+        if (rcDelayCommand == 8 /*changed JDH*/) calibratingG=400;
       } else if (rcData[YAW] > MAXCHECK && rcData[PITCH] > MAXCHECK && armed == 0) {
-        if (rcDelayCommand == 20) {
+        if (rcDelayCommand == 8 /*changed JDH*/) {
           servo[0] = 1500; //we center the yaw gyro in conf mode
           writeServos();
           #if defined(LCD_CONF)
@@ -396,20 +472,20 @@ void loop () {
           previousTime = micros();
         }
       } else if (rcData[YAW] < MINCHECK && rcData[PITCH] < MINCHECK && armed == 0) {
-        if (rcDelayCommand == 20) calibratingG=400;
+        if (rcDelayCommand == 8 /*changed JDH*/) calibratingG=400;
       } else if (activate[BOXARM] > 0) {
         if ((rcOptions & activate[BOXARM]) && okToArm) armed = 1;
         else if (armed) armed = 0;
         rcDelayCommand = 0;
       } else if ( (rcData[YAW] < MINCHECK || rcData[ROLL] < MINCHECK)  && armed == 1) {
-        if (rcDelayCommand == 20) armed = 0; // rcDelayCommand = 20 => 20x20ms = 0.4s = time to wait for a specific RC command to be acknowledged
+        if (rcDelayCommand == 8 /*changed JDH*/) armed = 0; // rcDelayCommand = 20 => 20x20ms = 0.4s = time to wait for a specific RC command to be acknowledged
       } else if ( (rcData[YAW] > MAXCHECK || rcData[ROLL] > MAXCHECK) && rcData[PITCH] < MAXCHECK && armed == 0 && calibratingG == 0 && calibratedACC == 1) {
-        if (rcDelayCommand == 20) armed = 1;
+        if (rcDelayCommand == 8 /*changed JDH*/) armed = 1;
       } else
         rcDelayCommand = 0;
     } else if (rcData[THROTTLE] > MAXCHECK && armed == 0) {
       if (rcData[YAW] < MINCHECK && rcData[PITCH] < MINCHECK) {
-        if (rcDelayCommand == 20) calibratingA=400;
+        if (rcDelayCommand == 8 /*changed JDH*/) calibratingA=400;
         rcDelayCommand++;
       } else if (rcData[PITCH] > MAXCHECK) {
          accZero[PITCH]++;writeParams();

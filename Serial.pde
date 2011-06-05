@@ -113,6 +113,31 @@ void serialCom() {
     case 'E': //GUI to arduino MAG calibration request
       calibratingM=1;
       break;
+//added JDH
+    case 'P':
+      Serial.println(cycleTime);
+      Serial.println(BATTERY_MONITOR_SCALE_FACTOR);
+      Serial.println(batVoltage);
+      Serial.println(batRaw);
+      Serial.println(int (armed));
+      Serial.println(rf);
+      break;
+    case 'o': //print angles
+      Serial.print(angle[PITCH]);
+      Serial.print(" ");
+      Serial.print(rcCommand[YAW]);
+      Serial.print(" ");
+      Serial.print(angle[ROLL]);
+      Serial.print(" ");
+      Serial.print(accZero[ROLL]);
+      Serial.print(" ");
+      Serial.print(softTrimROLL);
+      Serial.print(" ");
+      Serial.print(accZero[PITCH]);
+      Serial.print(" ");
+      Serial.println(softTrimPITCH);
+      break;
+//added JDH
     }
   }
 }

@@ -299,8 +299,10 @@ void mixTable() {
 
   #ifdef SERVO_TILT
     if (rcOptions & activate[BOXCAMSTAB] ) {
-      servo[1] = constrain(TILT_PITCH_MIDDLE + TILT_PITCH_PROP * angle[PITCH] /16 + rcData[CAMPITCH]-1500 , TILT_PITCH_MIN, TILT_PITCH_MAX);
-      servo[2] = constrain(TILT_ROLL_MIDDLE  + TILT_ROLL_PROP  * angle[ROLL]  /16 + rcData[CAMROLL]-1500, TILT_ROLL_MIN, TILT_ROLL_MAX);
+      //servo[1] = constrain(TILT_PITCH_MIDDLE + TILT_PITCH_PROP * angle[PITCH] /16 + rcData[CAMPITCH]-1500 , TILT_PITCH_MIN, TILT_PITCH_MAX);
+      //servo[2] = constrain(TILT_ROLL_MIDDLE  + TILT_ROLL_PROP  * angle[ROLL]  /16 + rcData[CAMROLL]-1500, TILT_ROLL_MIN, TILT_ROLL_MAX);
+      servo[1] = constrain(TILT_PITCH_MIDDLE + TILT_PITCH_PROP * (angle[PITCH] /16 - angle[ROLL]  /16), TILT_PITCH_MIN, TILT_PITCH_MAX);
+      servo[2] = constrain(TILT_ROLL_MIDDLE  + TILT_ROLL_PROP  * (angle[PITCH] /16 + angle[ROLL]  /16), TILT_ROLL_MIN, TILT_ROLL_MAX);
     } else {
       servo[1] = constrain(TILT_PITCH_MIDDLE  + rcData[CAMPITCH]-1500 , TILT_PITCH_MIN, TILT_PITCH_MAX);
       servo[2] = constrain(TILT_ROLL_MIDDLE   + rcData[CAMROLL]-1500,  TILT_ROLL_MIN, TILT_ROLL_MAX);
