@@ -109,6 +109,33 @@
 #define VBATLEVEL2_3S 103 // 10,3V
 #define VBATLEVEL3_3S 99  // 9.9V
 
+//*****************************************************************************************
+//MyStuff
+#define BATTERY_MONITOR_SCALE_FACTOR 0.012662116040955631399317406143345//0.012505010020 //+ use "P" to get batRaw a>d value then measure battery with DVM and do DVM/batRaw to get scale factor
+#define BAT_GOOD 10.8
+#define BAT_WARNING 10.4
+#define BAT_CRITICAL 10.1
+int batRaw;
+float batVoltage;
+String batString;
+int rfdetect;
+bool rf;
+
+int8_t softTrimROLL = 0;
+int8_t softTrimPITCH = 0;
+
+volatile int16_t failsafeCnt = 0; //********************************line1363
+
+
+#define LED_PINS {22, 23, 24, 25}
+LEDs_FlashAll LEDs;
+
+
+#define WIRELESS_TELEMETRY_J_PIN 40
+//*****************************************************************************************
+
+
+
 /* when there is an error on I2C bus, we neutralize the values during a short time. expressed in microseconds
    it is relevent only for a conf with at least a WMP */
 #define NEUTRALIZE_DELAY 100000
@@ -139,7 +166,7 @@
 //#define MOTOR_STOP
 
 /* some radios have not a neutral point centered on 1500. can be changed here */
-#define MIDRC 1500
+#define MIDRC 1470
 
 /* experimental
    camera trigger function : activated via Rc Options in the GUI, servo output=A2 on promini */

@@ -565,7 +565,7 @@ void Mag_getADC() {
                     -((rawADC[4]<<8) | rawADC[5]) );
   #endif
   #if defined (HMC5883)
-    MAG_ORIENTATION( ((rawADC[4]<<8) | rawADC[5]) ,
+    MAG_ORIENTATION( /*changed JDH*/-((rawADC[4]<<8) | rawADC[5]) ,
                     -((rawADC[0]<<8) | rawADC[1]) ,
                     -((rawADC[2]<<8) | rawADC[3]) );
   #endif
@@ -635,7 +635,7 @@ uint8_t WMP_getRawADC() {
   } 
 
   if ( (rawADC[5]&0x02) == 0x02 && (rawADC[5]&0x01) == 0 ) {// motion plus data
-    GYRO_ORIENTATION( - ( ((rawADC[5]>>2)<<8) + rawADC[2] ) ,
+    GYRO_ORIENTATION( /* changed JDH*/ ( ((rawADC[5]>>2)<<8) + rawADC[2] ) ,
                       - ( ((rawADC[4]>>2)<<8) + rawADC[1] ) ,
                       - ( ((rawADC[3]>>2)<<8) + rawADC[0] ) );
     GYRO_Common();
@@ -644,9 +644,9 @@ uint8_t WMP_getRawADC() {
                         (rawADC[3]&0x02)>>1  ? gyroADC[YAW]/5   : gyroADC[YAW]   ); // this step must be done after zero compensation    
     return 1;
   } else if ( (rawADC[5]&0x02) == 0 && (rawADC[5]&0x01) == 0) { //nunchuk data
-    ACC_ORIENTATION(  ( (rawADC[3]<<2)        + ((rawADC[5]>>4)&0x2) ) ,
+    ACC_ORIENTATION( /* changed JDH*/- ( (rawADC[3]<<2)        + ((rawADC[5]>>4)&0x2) ) ,
                     - ( (rawADC[2]<<2)        + ((rawADC[5]>>3)&0x2) ) ,
-                      ( ((rawADC[4]&0xFE)<<2) + ((rawADC[5]>>5)&0x6) ) );
+   /* changed JDH*/-  ( ((rawADC[4]&0xFE)<<2) + ((rawADC[5]>>5)&0x6) ) );
     ACC_Common();
     return 0;
   } else

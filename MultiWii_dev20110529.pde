@@ -2,6 +2,7 @@
 MultiWiiCopter by Alexandre Dubus
 www.multiwii.com
 May  2011     V1.dev
+Mods by JH 2011 06 05
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
@@ -9,6 +10,7 @@ May  2011     V1.dev
 */
 
 #include "config.h"
+#include "LEDs.h"
 #include <EEPROM.h>
 #define   VERSION                    18
 
@@ -59,6 +61,8 @@ May  2011     V1.dev
   #define CAM2PIN                    7   //unused just for compatibility with MEGA
   #define ISR_UART                   ISR(USART_UDRE_vect)
   #define V_BATPIN                   3    // Analog PIN 3
+  #define RF_DETPIN 4  // RF detection LED from Rx this is either 1.6v when there is RF or 0v
+
 #endif
 #if defined(MEGA)
   #define LEDPIN_PINMODE             pinMode (13, OUTPUT);
@@ -97,12 +101,12 @@ May  2011     V1.dev
   #define DIGITAL_CAM_HIGH           PORTC |= 1<<2;PORTL |= 1<<4;
   #define DIGITAL_CAM_LOW            PORTC &= ~(1<<2);PORTL |= 1<<4;
   //RX PIN assignment inside the port //for PORTK
-  #define THROTTLEPIN                0  //PIN 62 =  PIN A8
-  #define ROLLPIN                    1  //PIN 63 =  PIN A9
-  #define PITCHPIN                   2  //PIN 64 =  PIN A10
-  #define YAWPIN                     3  //PIN 65 =  PIN A11
-  #define AUX1PIN                    4  //PIN 66 =  PIN A12
-  #define AUX2PIN                    5  //PIN 67 =  PIN A13
+  #define THROTTLEPIN                3  //PIN 62 =  PIN A8
+  #define ROLLPIN                    5  //PIN 63 =  PIN A9
+  #define PITCHPIN                   4  //PIN 64 =  PIN A10
+  #define YAWPIN                     2  //PIN 65 =  PIN A11
+  #define AUX1PIN                    1  //PIN 66 =  PIN A12
+  #define AUX2PIN                    0  //PIN 67 =  PIN A13
   #define CAM1PIN                    6  //PIN 68 =  PIN A14
   #define CAM2PIN                    7  //PIN 69 =  PIN A15
   #define ISR_UART                   ISR(USART0_UDRE_vect)
