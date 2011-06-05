@@ -10,11 +10,13 @@ Mods by JH 2011 06 05
 */
 
 #include "config.h"
-#include "LEDs.h"
 #include "WProgram.h"
-#include <WString.h>
+//#include <WString.h>
 #include <EEPROM.h>
+#include "LEDs.h"
 #define   VERSION                    18
+
+#define RF_DETPIN 4  // RF detection LED from Rx this is either 1.6v when there is RF or 0v
 
 #if defined(PROMINI)
   #define LEDPIN_PINMODE             pinMode (13, OUTPUT);
@@ -63,7 +65,6 @@ Mods by JH 2011 06 05
   #define CAM2PIN                    7   //unused just for compatibility with MEGA
   #define ISR_UART                   ISR(USART_UDRE_vect)
   #define V_BATPIN                   3    // Analog PIN 3
-  #define RF_DETPIN 4  // RF detection LED from Rx this is either 1.6v when there is RF or 0v
 
 #endif
 #if defined(MEGA)
