@@ -17,6 +17,7 @@ Mods by JH 2011 06 05
 #define   VERSION                    18
 
 #define RF_DETPIN 4  // RF detection LED from Rx this is either 1.6v when there is RF or 0v
+HardwareSerial* SERIAL_PORT;
 
 #if defined(PROMINI)
   #define LEDPIN_PINMODE             pinMode (13, OUTPUT);
