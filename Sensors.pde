@@ -4,7 +4,7 @@
 
 //default board orientation (match FFIMU default orientation)
 #define ACC_ORIENTATION(X, Y, Z)  {accADC[ROLL]  = Y; accADC[PITCH]  = -X; accADC[YAW]  = Z;}
-#define GYRO_ORIENTATION(X, Y, Z) {gyroADC[ROLL] = -X; gyroADC[PITCH] = Y; gyroADC[YAW] = Z;}
+#define GYRO_ORIENTATION(X, Y, Z) {gyroADC[ROLL] = Y; gyroADC[PITCH] = -X; gyroADC[YAW] = Z;}
 #define MAG_ORIENTATION(X, Y, Z)  {magADC[ROLL]  = Y; magADC[PITCH]  = -X; magADC[YAW]  = Z;}
 
 //default I2C address (match FFIMU choice)
