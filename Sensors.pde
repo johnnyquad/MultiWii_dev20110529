@@ -3,9 +3,9 @@
 // ***************************
 
 //default board orientation (match FFIMU default orientation)
-#define ACC_ORIENTATION(X, Y, Z)  {accADC[ROLL]  = X; accADC[PITCH]  = Y; accADC[YAW]  = Z;}
-#define GYRO_ORIENTATION(X, Y, Z) {gyroADC[ROLL] = X; gyroADC[PITCH] = Y; gyroADC[YAW] = Z;}
-#define MAG_ORIENTATION(X, Y, Z)  {magADC[ROLL]  = X; magADC[PITCH]  = Y; magADC[YAW]  = Z;}
+#define ACC_ORIENTATION(X, Y, Z)  {accADC[ROLL]  = -Y; accADC[PITCH]  = X; accADC[YAW]  = Z;}
+#define GYRO_ORIENTATION(X, Y, Z) {gyroADC[ROLL] = Y; gyroADC[PITCH] = -X; gyroADC[YAW] = Z;}
+#define MAG_ORIENTATION(X, Y, Z)  {magADC[ROLL]  = Y; magADC[PITCH]  = -X; magADC[YAW]  = Z;}
 
 //default I2C address (match FFIMU choice)
 #define ADXL345_ADDRESS 0x3A
@@ -565,7 +565,7 @@ void Mag_getADC() {
                     -((rawADC[4]<<8) | rawADC[5]) );
   #endif
   #if defined (HMC5883)
-    MAG_ORIENTATION( /*changed JDH*/-((rawADC[4]<<8) | rawADC[5]) ,
+    MAG_ORIENTATION( ((rawADC[4]<<8) | rawADC[5]) ,
                     -((rawADC[0]<<8) | rawADC[1]) ,
                     -((rawADC[2]<<8) | rawADC[3]) );
   #endif
@@ -635,7 +635,7 @@ uint8_t WMP_getRawADC() {
   } 
 
   if ( (rawADC[5]&0x02) == 0x02 && (rawADC[5]&0x01) == 0 ) {// motion plus data
-    GYRO_ORIENTATION( /* changed JDH*/ ( ((rawADC[5]>>2)<<8) + rawADC[2] ) ,
+    GYRO_ORIENTATION( - ( ((rawADC[5]>>2)<<8) + rawADC[2] ) ,
                       - ( ((rawADC[4]>>2)<<8) + rawADC[1] ) ,
                       - ( ((rawADC[3]>>2)<<8) + rawADC[0] ) );
     GYRO_Common();
@@ -644,9 +644,9 @@ uint8_t WMP_getRawADC() {
                         (rawADC[3]&0x02)>>1  ? gyroADC[YAW]/5   : gyroADC[YAW]   ); // this step must be done after zero compensation    
     return 1;
   } else if ( (rawADC[5]&0x02) == 0 && (rawADC[5]&0x01) == 0) { //nunchuk data
-    ACC_ORIENTATION( /* changed JDH*/- ( (rawADC[3]<<2)        + ((rawADC[5]>>4)&0x2) ) ,
+    ACC_ORIENTATION(  ( (rawADC[3]<<2)        + ((rawADC[5]>>4)&0x2) ) ,
                     - ( (rawADC[2]<<2)        + ((rawADC[5]>>3)&0x2) ) ,
-   /* changed JDH*/-  ( ((rawADC[4]&0xFE)<<2) + ((rawADC[5]>>5)&0x6) ) );
+                      ( ((rawADC[4]&0xFE)<<2) + ((rawADC[5]>>5)&0x6) ) );
     ACC_Common();
     return 0;
   } else
