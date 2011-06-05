@@ -117,18 +117,15 @@
 #define BAT_CRITICAL 10.1
 int batRaw;
 float batVoltage;
-String batString;
+//String batString;
 int rfdetect;
 bool rf;
 
-int8_t softTrimROLL = 0;
-int8_t softTrimPITCH = 0;
 
-volatile int16_t failsafeCnt = 0; //********************************line1363
+ //********************************line1363
 
 
-#define LED_PINS {22, 23, 24, 25}
-LEDs_FlashAll LEDs;
+
 
 
 #define WIRELESS_TELEMETRY_J_PIN 40

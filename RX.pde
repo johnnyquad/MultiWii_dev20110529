@@ -3,6 +3,9 @@ volatile uint16_t rcPinValue[8] = {1500,1500,1500,1500,1500,1500,1500,1500}; // 
 static int16_t rcData4Values[8][4];
 static int16_t rcDataMean[8] ;
 
+volatile int16_t failsafeCnt = 0;
+
+
 // ***PPM SUM SIGNAL***
 #ifdef SERIAL_SUM_PPM
 static uint8_t rcChannel[8] = {SERIAL_SUM_PPM};

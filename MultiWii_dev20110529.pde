@@ -11,6 +11,8 @@ Mods by JH 2011 06 05
 
 #include "config.h"
 #include "LEDs.h"
+#include "WProgram.h"
+#include <WString.h>
 #include <EEPROM.h>
 #define   VERSION                    18
 
@@ -134,6 +136,10 @@ Mods by JH 2011 06 05
 #define BOXCAMTRIG  4
 #define BOXARM      5
 
+//added JDH
+#define LED_PINS {22, 23, 24, 25}
+LEDs_FlashAll LEDs;
+//added JDH
 
 static uint32_t currentTime = 0;
 static uint32_t previousTime = 0;

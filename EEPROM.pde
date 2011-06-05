@@ -1,5 +1,8 @@
 
 static uint8_t checkNewConf = 139;
+int8_t softTrimROLL = 0;
+int8_t softTrimPITCH = 0;
+
 
 void readEEPROM() {
   uint8_t i,p=1;
