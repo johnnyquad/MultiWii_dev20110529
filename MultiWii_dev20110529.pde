@@ -192,8 +192,8 @@ static uint8_t rcOptions;
 // ******************
 // rc functions
 // ******************
-#define MINCHECK 1100
-#define MAXCHECK 1900
+#define MINCHECK 1150
+#define MAXCHECK 1850
 
 volatile int16_t failsafeCnt = 0;
 
