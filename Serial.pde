@@ -135,7 +135,10 @@ void serialCom() {
       Serial.print(" ");
       Serial.print(accZero[PITCH]);
       Serial.print(" ");
-      Serial.println(softTrimPITCH);
+      Serial.print(softTrimPITCH);
+      Serial.print(" ");
+      Serial.println(int (activate[BOXCAMSTAB]));
+      
       break;
 //added JDH
     }
