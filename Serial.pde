@@ -123,11 +123,11 @@ void serialCom() {
       Serial.println(rf);
       break;
     case 'o': //print angles
-      Serial.print(angle[PITCH]);
+//      Serial.print(angle[PITCH]);
+//      Serial.print(" ");
+      Serial.print(rcData[PITCH]);
       Serial.print(" ");
-      Serial.print(rcCommand[YAW]);
-      Serial.print(" ");
-      Serial.print(angle[ROLL]);
+      Serial.print(MAXCHECK);
       Serial.print(" ");
       Serial.print(accZero[ROLL]);
       Serial.print(" ");
@@ -135,9 +135,7 @@ void serialCom() {
       Serial.print(" ");
       Serial.print(accZero[PITCH]);
       Serial.print(" ");
-      Serial.print(softTrimPITCH);
-      Serial.print(" ");
-      Serial.println(int (activate[BOXCAMSTAB]));
+      Serial.println(softTrimPITCH);
       break;
 //added JDH
     }

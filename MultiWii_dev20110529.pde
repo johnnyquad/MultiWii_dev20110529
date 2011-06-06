@@ -19,6 +19,11 @@ Mods by JH 2011 06 05
 #define RF_DETPIN 4  // RF detection LED from Rx this is either 1.6v when there is RF or 0v
 HardwareSerial* SERIAL_PORT;
 
+// added JDH
+int8_t softTrimROLL = 0;  // this allows the soft trims to be saved to EEPROM
+int8_t softTrimPITCH = 0;
+// added JDH
+
 #if defined(PROMINI)
   #define LEDPIN_PINMODE             pinMode (13, OUTPUT);
   #define LEDPIN_SWITCH              PINB |= 1<<5;     //switch LEDPIN state (digital PIN 13)
@@ -193,7 +198,7 @@ static uint8_t rcOptions;
 // rc functions
 // ******************
 #define MINCHECK 1150
-#define MAXCHECK 1850
+#define MAXCHECK 1800
 
 volatile int16_t failsafeCnt = 0;
 
