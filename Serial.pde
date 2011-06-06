@@ -114,7 +114,7 @@ void serialCom() {
       calibratingM=1;
       break;
 //added JDH
-    case 'P':
+    case 'p':
       Serial.println(cycleTime);
       Serial.println(BATTERY_MONITOR_SCALE_FACTOR);
       Serial.println(batVoltage);
@@ -138,7 +138,6 @@ void serialCom() {
       Serial.print(softTrimPITCH);
       Serial.print(" ");
       Serial.println(int (activate[BOXCAMSTAB]));
-      
       break;
 //added JDH
     }
