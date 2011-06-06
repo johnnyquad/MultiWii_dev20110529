@@ -10,6 +10,12 @@ void readEEPROM() {
   for(i=0;i<6;i++) activate[i] = EEPROM.read(p++); //22
   for(i=0;i<3;i++) accZero[i] = (EEPROM.read(p++)&0xff) + (EEPROM.read(p++)<<8); // 28
   for(i=0;i<3;i++) magZero[i] = (EEPROM.read(p++)&0xff) + (EEPROM.read(p++)<<8); // 34
+// changed JDH
+  softTrimROLL = EEPROM.read(p++);
+  softTrimPITCH = EEPROM.read(p++);
+  accZero[ROLL] = accZero[ROLL] + softTrimROLL;
+  accZero[PITCH] = accZero[PITCH] + softTrimPITCH;
+// changed JDH  
   //note on the following lines: we do this calcul here because it's a static and redundant result and we don't want to load the critical loop whith it
   rcFactor1 = rcRate8/50.0*rcExpo8/100.0/250000.0;
   rcFactor2 = (100-rcExpo8)*rcRate8/5000.0;
@@ -22,6 +28,9 @@ void writeParams() {
   for(i=0;i<6;i++) EEPROM.write(p++,activate[i]); //22
   for(i=0;i<3;i++) {EEPROM.write(p++,accZero[i]);EEPROM.write(p++,accZero[i]>>8&0xff);} // 28
   for(i=0;i<3;i++) {EEPROM.write(p++,magZero[i]);EEPROM.write(p++,magZero[i]>>8&0xff);} // 34
+// changed JDH  
+  EEPROM.write(p++,softTrimROLL);EEPROM.write(p++,softTrimPITCH);
+// changed JDH  
   readEEPROM();
   blinkLED(15,20,1);
 }

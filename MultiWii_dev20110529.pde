@@ -496,13 +496,29 @@ void loop () {
         if (rcDelayCommand == 8 /*changed JDH*/) calibratingA=400;
         rcDelayCommand++;
       } else if (rcData[PITCH] > MAXCHECK) {
-         accZero[PITCH]++;writeParams();
+         accZero[PITCH] -= softTrimPITCH;
+         accZero[ROLL] -= softTrimROLL;
+         softTrimPITCH++;
+         writeParams();
+         //accZero[PITCH]++;writeParams();
       } else if (rcData[PITCH] < MINCHECK) {
-         accZero[PITCH]--;writeParams();
+         accZero[PITCH] -= softTrimPITCH;
+         accZero[ROLL] -= softTrimROLL;         
+         softTrimPITCH--;
+         writeParams();
+         //accZero[PITCH]--;writeParams();
       } else if (rcData[ROLL] > MAXCHECK) {
-         accZero[ROLL]++;writeParams();
+         accZero[PITCH] -= softTrimPITCH;
+         accZero[ROLL] -= softTrimROLL;        
+         softTrimROLL++;
+         writeParams();
+         //accZero[ROLL]++;writeParams();
       } else if (rcData[ROLL] < MINCHECK) {
-         accZero[ROLL]--;writeParams();
+         accZero[PITCH] -= softTrimPITCH;
+         accZero[ROLL] -= softTrimROLL;        
+         softTrimROLL--;
+         writeParams();
+         //accZero[ROLL]--;writeParams();
       } else {
         rcDelayCommand = 0;
       }
